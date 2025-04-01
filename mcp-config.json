@@ -1,0 +1,8 @@
+{
+  "routes": {
+    "/api/patients": "patientService/patients",
+    "/api/appointments": "appointmentService/appointments",
+    "/api/auth/login": "authService/login",
+    "/api/staff": "staffService/staff"
+  }
+}
