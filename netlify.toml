@@ -3,22 +3,34 @@
 [build]
   # Command to build your frontend application (adjust if needed)
   command = "npm run build"
-  
+
   # Directory containing the built frontend assets (output of 'npm run build')
   publish = "dist"
-  
+
   # Directory where your Netlify Functions live
   functions = "netlify/functions"
 
 [functions]
   # Specify the Node.js version (optional, use a version compatible with your code)
   # node_version = "18"
-  
+
   # Use esbuild for faster function bundling, recommended for TypeScript
   node_bundler = "esbuild"
 
 # Optional: Redirects and rewrites can be defined here
-# Example: Redirect all paths to index.html for SPAs
+# Redirect API calls for NexHealth to the proxy function
+[[redirects]]
+  from = "/api/nexhealth/*"
+  to = "/.netlify/functions/nexhealth-proxy/:splat"
+  status = 200 # Use 200 for proxying
+
+# Redirect API calls for Database to the database MCP function
+[[redirects]]
+  from = "/api/database/*"
+  to = "/.netlify/functions/database-mcp/:splat"
+  status = 200 # Use 200 for proxying
+
+# Example: Redirect all other paths to index.html for SPAs (ensure this is last if used)
 # [[redirects]]
 #  from = "/*"
 #  to = "/index.html"

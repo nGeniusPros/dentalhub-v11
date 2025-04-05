@@ -82,7 +82,8 @@ export const useMCPRequest = <T = unknown>(
         throw new Error(`MCP endpoint HTTP error! Status: ${response.status}`);
       }
 
-      const result: MCPClientResponseWrapper = await response.json();
+      // Assert the type after parsing JSON
+      const result = await response.json() as MCPClientResponseWrapper;
 
       // Check for MCP-level errors returned from the gateway
       if (result.error) {

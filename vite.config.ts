@@ -10,4 +10,11 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'), // Define @ alias
     },
   },
+  define: {
+    'process.env': {
+      SUPABASE_URL: process.env.VITE_SUPABASE_URL,
+      SUPABASE_SERVICE_KEY: process.env.VITE_SUPABASE_SERVICE_KEY,
+      SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_ANON_KEY
+    }
+  }
 })

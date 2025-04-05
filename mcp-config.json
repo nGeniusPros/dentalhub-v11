@@ -1,8 +1,22 @@
 {
   "routes": {
-    "/api/patients": "patientService/patients",
-    "/api/appointments": "appointmentService/appointments",
-    "/api/auth/login": "authService/login",
-    "/api/staff": "staffService/staff"
+    "/auth/login": "AuthAdapter.handleLogin",
+    "/auth/logout": "AuthAdapter.handleLogout",
+    "/auth/session": "AuthAdapter.handleSession",
+    "/login/admin": "AuthAdapter.handleAdminLogin",
+    "/login/staff": "AuthAdapter.handleStaffLogin",
+    "/login/patient": "AuthAdapter.handlePatientLogin",
+    "/login/forgot-password": "AuthAdapter.handleForgotPassword",
+    "/login/new-location": "AuthAdapter.handleNewLocation",
+    "/api/patients": "PatientAdapter.processRequest",
+    "/api/patients/*": "PatientAdapter.processRequest",
+    "/api/nexhealth/patients": "NexHealthAdapter.handleRequest",
+    "/api/nexhealth/*": "NexHealthAdapter.handleRequest",
+    "/api/voice-campaigns": "VoiceCampaignAdapter.handleRequest",
+    "/api/voice-campaigns/*": "VoiceCampaignAdapter.handleRequest",
+    "/api/voice-agent": "VoiceCampaignAdapter.handleRequest",
+    "/api/voice-analytics": "VoiceCampaignAdapter.handleRequest",
+    "/api/database": "DatabaseAdapter.processRequest",
+    "/api/database/*": "DatabaseAdapter.processRequest"
   }
 }

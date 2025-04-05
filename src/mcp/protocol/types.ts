@@ -1,9 +1,9 @@
 export interface MCPRequest {
   path: string;
   method: string;
-  headers: Record<string, string>;
-  body: unknown;
-  query: Record<string, string>;
+  headers?: Record<string, string>;
+  body?: unknown;
+  query?: Record<string, string>;
 }
 
 export interface MCPError {
@@ -15,6 +15,6 @@ export interface MCPError {
 export interface MCPResponse {
   status: number;
   headers: Record<string, string>;
-  body: string | null; // Body might be null in case of certain errors or empty responses
+  body: unknown; // Body can be any type of data
   error: MCPError | null; // Structured error information
 }

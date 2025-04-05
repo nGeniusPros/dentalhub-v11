@@ -17,7 +17,7 @@ const LoginNavigation: React.FC<LoginNavigationProps> = ({
       {/* <div className="fixed top-0 left-0 right-0 px-6 py-4 flex justify-between items-center bg-white/80 backdrop-blur-sm z-10">
         <div className="text-lg font-bold text-navy">nGenius Pros</div>
         <Link to="/" className="p-2 rounded-full hover:bg-gray-100">
-          <Icons.ArrowLeft size={20} className="text-gray-700" />
+          <Icons.ArrowLeft className="w-5 h-5 text-gray-700" />
         </Link>
       </div> */}
 

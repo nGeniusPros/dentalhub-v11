@@ -1,0 +1,230 @@
+{
+  "code": true,
+  "description": null,
+  "error": null,
+  "data": {
+    "patients": [
+      {
+        "id": 312965811,
+        "email": null,
+        "first_name": "* Alicia",
+        "middle_name": null,
+        "last_name": "Etcheberry",
+        "name": "* Alicia Etcheberry",
+        "created_at": "2024-11-05T19:49:02.755Z",
+        "updated_at": "2024-11-05T19:49:02.755Z",
+        "institution_id": 12516,
+        "foreign_id": "14000004748057",
+        "foreign_id_type": "msg-dentrixascend-DataSource-16716",
+        "bio": {
+          "city": null,
+          "state": null,
+          "gender": "Female",
+          "zip_code": null,
+          "new_patient": false,
+          "non_patient": false,
+          "phone_number": "7148178475",
+          "date_of_birth": "2005-08-23",
+          "address_line_1": null,
+          "address_line_2": null,
+          "street_address": null,
+          "cell_phone_number": "7148178475",
+          "home_phone_number": "",
+          "work_phone_number": "7142345767",
+          "previous_foreign_id": null
+        },
+        "inactive": true,
+        "last_sync_time": "2024-11-05T19:49:02.755Z",
+        "guarantor_id": 312965376,
+        "unsubscribe_sms": false,
+        "balance": {
+          "amount": "0.00",
+          "currency": "USD"
+        },
+        "billing_type": null,
+        "chart_id": null,
+        "preferred_language": null,
+        "location_ids": [
+          156530
+        ]
+      },
+      {
+        "id": 312968217,
+        "email": "br.juliano@gmail.com",
+        "first_name": "*Brian Edward",
+        "middle_name": null,
+        "last_name": "Juliano",
+        "name": "*Brian Edward Juliano",
+        "created_at": "2024-11-05T19:53:54.328Z",
+        "updated_at": "2024-11-05T19:53:54.328Z",
+        "institution_id": 12516,
+        "foreign_id": "14000004749018",
+        "foreign_id_type": "msg-dentrixascend-DataSource-16716",
+        "bio": {
+          "city": null,
+          "state": null,
+          "gender": "Male",
+          "zip_code": null,
+          "new_patient": false,
+          "non_patient": false,
+          "phone_number": "9492802098",
+          "date_of_birth": "1981-03-07",
+          "address_line_1": null,
+          "address_line_2": null,
+          "street_address": null,
+          "cell_phone_number": "9468313699",
+          "home_phone_number": "",
+          "work_phone_number": "7143630382",
+          "previous_foreign_id": null
+        },
+        "inactive": true,
+        "last_sync_time": "2024-11-05T19:53:54.328Z",
+        "guarantor_id": null,
+        "unsubscribe_sms": false,
+        "balance": {
+          "amount": "0.00",
+          "currency": "USD"
+        },
+        "billing_type": null,
+        "chart_id": null,
+        "preferred_language": null,
+        "location_ids": [
+          156530
+        ]
+      },
+      {
+        "id": 312978597,
+        "email": null,
+        "first_name": "3TEST",
+        "middle_name": null,
+        "last_name": "TEST",
+        "name": "3TEST TEST",
+        "created_at": "2024-11-05T20:01:17.131Z",
+        "updated_at": "2024-11-05T20:01:17.131Z",
+        "institution_id": 12516,
+        "foreign_id": "14000004754881",
+        "foreign_id_type": "msg-dentrixascend-DataSource-16716",
+        "bio": {
+          "city": null,
+          "state": null,
+          "gender": "Female",
+          "zip_code": null,
+          "new_patient": false,
+          "non_patient": false,
+          "phone_number": "9095607472",
+          "date_of_birth": "1900-01-01",
+          "address_line_1": null,
+          "address_line_2": null,
+          "street_address": null,
+          "cell_phone_number": "",
+          "home_phone_number": "",
+          "work_phone_number": "",
+          "previous_foreign_id": null
+        },
+        "inactive": false,
+        "last_sync_time": "2024-11-05T20:01:17.131Z",
+        "guarantor_id": null,
+        "unsubscribe_sms": false,
+        "balance": {
+          "amount": "0.00",
+          "currency": "USD"
+        },
+        "billing_type": null,
+        "chart_id": null,
+        "preferred_language": null,
+        "location_ids": [
+          156530
+        ]
+      },
+      {
+        "id": 312962720,
+        "email": null,
+        "first_name": "<No First Name>",
+        "middle_name": null,
+        "last_name": "<No Last Name>",
+        "name": "<No First Name> <No Last Name>",
+        "created_at": "2024-11-05T19:44:06.293Z",
+        "updated_at": "2024-11-05T19:44:06.293Z",
+        "institution_id": 12516,
+        "foreign_id": "14000004751345",
+        "foreign_id_type": "msg-dentrixascend-DataSource-16716",
+        "bio": {
+          "city": null,
+          "state": null,
+          "gender": "Female",
+          "zip_code": null,
+          "new_patient": false,
+          "non_patient": false,
+          "phone_number": "",
+          "date_of_birth": "1900-01-01",
+          "address_line_1": null,
+          "address_line_2": null,
+          "street_address": null,
+          "cell_phone_number": "",
+          "home_phone_number": "",
+          "work_phone_number": "",
+          "previous_foreign_id": null
+        },
+        "inactive": true,
+        "last_sync_time": "2024-11-05T19:44:06.293Z",
+        "guarantor_id": null,
+        "unsubscribe_sms": false,
+        "balance": {
+          "amount": "0.00",
+          "currency": "USD"
+        },
+        "billing_type": null,
+        "chart_id": null,
+        "preferred_language": null,
+        "location_ids": [
+          156530
+        ]
+      },
+      {
+        "id": 312963006,
+        "email": null,
+        "first_name": "<No First Name>",
+        "middle_name": null,
+        "last_name": "<No Last Name>",
+        "name": "<No First Name> <No Last Name>",
+        "created_at": "2024-11-05T19:44:06.299Z",
+        "updated_at": "2024-11-05T19:44:06.299Z",
+        "institution_id": 12516,
+        "foreign_id": "14000004754620",
+        "foreign_id_type": "msg-dentrixascend-DataSource-16716",
+        "bio": {
+          "city": null,
+          "state": null,
+          "gender": "Female",
+          "zip_code": null,
+          "new_patient": false,
+          "non_patient": false,
+          "phone_number": "",
+          "date_of_birth": "1900-01-01",
+          "address_line_1": null,
+          "address_line_2": null,
+          "street_address": null,
+          "cell_phone_number": "7023608903",
+          "home_phone_number": "",
+          "work_phone_number": "7026575509",
+          "previous_foreign_id": null
+        },
+        "inactive": true,
+        "last_sync_time": "2024-11-05T19:44:06.299Z",
+        "guarantor_id": null,
+        "unsubscribe_sms": false,
+        "balance": {
+          "amount": "0.00",
+          "currency": "USD"
+        },
+        "billing_type": null,
+        "chart_id": null,
+        "preferred_language": null,
+        "location_ids": [
+          156530
+        ]
+      }
+    ]
+  },
+  "count": 8524
+}

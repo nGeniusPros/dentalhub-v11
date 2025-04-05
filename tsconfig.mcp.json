@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",         // Target Node.js runtime
+    "module": "ESNext",         // Output ESM for import/export
+    "moduleResolution": "node", // Use Node.js module resolution
+    "outDir": "./dist",         // Output directory
+    "esModuleInterop": true,    // Compatibility helper
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+    "skipLibCheck": true,       // Skip checking library types
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,             // Enable strict checks
+    "noEmit": false,            // *** Ensure files are emitted ***
+    "declaration": true,       // Re-enable .d.ts
+    "sourceMap": true          // Re-enable source maps
+  },
+  // Explicitly list files instead of using include/exclude
+  "files": [
+    "src/mcp/types.ts",
+    "src/mcp/protocol/types.ts",
+    "src/mcp/config/types.ts",
+    "src/mcp/config/database.ts",
+    "src/mcp/adapters/PatientAdapter.ts",
+    "src/mcp/adapters/AuthAdapter.ts",
+    "src/mcp/adapters/VoiceCampaignAdapter.ts",
+    "src/mcp/adapters/DatabaseAdapter.ts",
+    "src/mcp/gateway/MCPGateway.ts",
+    "src/mcp/gateway/DatabaseMCPGateway.ts",
+    "src/mcp/client/MCPClient.ts",
+    "src/mcp/rules/RuleEngine.ts",
+    "src/mcp/rules/RuleLoader.ts",
+    "src/features/index.ts",
+    "src/features/patients/rules/index.ts",
+    "src/features/auth/rules/index.ts",
+    "src/features/communications/voice/rules/index.ts"
+  ]
+}

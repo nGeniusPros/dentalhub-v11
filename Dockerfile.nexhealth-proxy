@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy application files
+COPY nexhealth-proxy-server.mjs ./
+COPY .env ./
+
+# Create cache directory
+RUN mkdir -p cache
+
+# Expose the port
+EXPOSE 3001
+
+# Set environment variables
+ENV NODE_ENV=production
+
+# Start the server
+CMD ["node", "nexhealth-proxy-server.mjs"]

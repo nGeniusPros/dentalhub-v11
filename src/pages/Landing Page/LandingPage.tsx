@@ -1,64 +1,29 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Assuming react-router-dom is used
-import { Button } from '@/components/ui/button'; // Assuming Button is in this path
-import { cn } from '@/lib/utils'; // Assuming cn utility is here
-import { 
-  LucideChevronDown, LucideChevronRight, LucideCheck, LucideCalendar, 
-  LucideClock, LucideBrain, LucideMessageSquare, LucideUsers, 
+import { Link } from 'react-router-dom';
+import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button';
+import { Mockup } from "@/components/ui/mockup";
+import { Glow } from "@/components/ui/glow";
+import {
+  LucideChevronDown, LucideChevronRight, LucideCheck, LucideCalendar,
+  LucideClock, LucideBrain, LucideMessageSquare, LucideUsers,
   LucideDollarSign, LucideCheckCircle, LucideLineChart, LucideShield,
-  LucideClipboard, LucideActivity, LucideZap, LucideTrendingUp, LucideUser, LucideCalendarDays, LucideBadgeDollarSign // Added icons potentially used by StatsCard
-} from 'lucide-react'; // Assuming lucide-react is installed
+  LucideClipboard, LucideActivity, LucideZap,
+  
+} from 'lucide-react';
+import StatsCard from "@/components/dashboard/StatsCard";
 
-// --- Placeholder Components ---
-// Replace these with your actual component implementations
-
-const Mockup = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  return <div className={cn("border rounded-lg overflow-hidden bg-gray-100 p-4", className)}>{children}</div>;
-};
-
-const Glow = ({ className, variant }: { className?: string; variant?: string }) => {
-  const baseStyle = "absolute rounded-full filter blur-3xl opacity-20 pointer-events-none";
-  let positionStyle = "";
-  if (variant === "center") {
-    positionStyle = "left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-purple";
-  }
-  return <div className={cn(baseStyle, positionStyle, className)}></div>;
-};
-
-// Placeholder for StatsCard - Replace with your actual component
-const StatsCard = ({ title, value, change, icon, variant, isGlowing }: { title: string; value: string; change: string; icon: string; variant: string; isGlowing?: boolean }) => {
-  // Basic placeholder rendering
-  const IconComponent = {
-    'trending-up': LucideTrendingUp,
-    'users': LucideUsers,
-    'calendar': LucideCalendarDays,
-    'dollar-sign': LucideBadgeDollarSign,
-  }[icon] || LucideZap; // Default icon
-
-  return (
-    <div className={`p-4 rounded-lg shadow ${isGlowing ? 'shadow-lg' : ''} bg-white border-l-4 border-${variant}-500`}>
-      <div className="flex items-center justify-between mb-2">
-        <h4 className="text-sm font-medium text-gray-600">{title}</h4>
-        <IconComponent className={`h-5 w-5 text-${variant}-500`} />
-      </div>
-      <div className="text-2xl font-bold text-navy">{value}</div>
-      <div className="text-xs text-green-600">+{change}% This Month</div>
-      <p className="text-xs text-gray-500 mt-1">Placeholder for {variant} variant</p>
-    </div>
-  );
-};
-// --- End Placeholder Components ---
-
-
+/**
+ * Header Component
+ */
 const Header = () => {
   // Function to handle smooth scrolling to sections
   const scrollToSection = (sectionId: string) => {
-    console.log(`Scrolling to section: ${sectionId}`);
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
-      console.warn(`Section with id "${sectionId}" not found. Please ensure the section exists in the document.`);
+      console.warn(`Section with id "${sectionId}" not found`);
     }
   };
 
@@ -74,7 +39,7 @@ const Header = () => {
         <div className="flex items-center space-x-8">
           <Link
             to="/#how-it-works"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.preventDefault();
               scrollToSection('how-it-works');
             }}
@@ -84,7 +49,7 @@ const Header = () => {
           </Link>
           <Link
             to="/#features"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.preventDefault();
               scrollToSection('features');
             }}
@@ -94,7 +59,7 @@ const Header = () => {
           </Link>
           <Link
             to="/#faq"
-            onClick={(e) => {
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.preventDefault();
               scrollToSection('faq');
             }}
@@ -112,6 +77,108 @@ const Header = () => {
         </div>
       </div>
     </header>
+  );
+};
+
+/**
+ * Custom Hero Section Component - Similar to original design
+ */
+const CustomHero = () => {
+  return (
+    <section className="relative overflow-hidden bg-gray-smoke py-16 md:py-24 lg:py-32">
+      <div className="relative mx-auto max-w-[1280px] px-4">
+        <div className="relative z-10 flex flex-col items-center text-center">
+          {/* Heading */}
+          <h1
+            className={cn(
+              "inline-block animate-appear",
+              "text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl",
+              "leading-[1.1] text-navy",
+              "mb-6"
+            )}
+          >
+            The Future of Dental Practice
+            <br />
+            Management is Here!
+          </h1>
+
+          {/* Description */}
+          <p
+            className={cn(
+              "max-w-[650px] animate-appear opacity-0 [animation-delay:150ms]",
+              "text-base sm:text-lg md:text-xl",
+              "text-gray-darker",
+              "font-medium mb-8"
+            )}
+          >
+            Transform your dental practice with our AI-powered platform:
+            designed to enhance patient care, optimize operations, and
+            maximize profitability.
+          </p>
+
+          {/* CTAs */}
+          <div
+            className="relative z-10 flex flex-wrap justify-center gap-4 mb-16
+              animate-appear opacity-0 [animation-delay:300ms]"
+          >
+            <Button
+              size="lg"
+              className={cn(
+                "bg-gradient-to-r from-turquoise to-navy hover:from-navy hover:to-turquoise",
+                "text-white font-medium shadow-lg",
+                "transition-all duration-300"
+              )}
+              asChild
+            >
+              <Link to="/signup">Join our exclusive waitlist today!</Link>
+            </Button>
+          </div>
+
+          {/* Mockup */}
+          <div className="relative w-full max-w-5xl mx-auto">
+            <Mockup
+              className={cn(
+                "animate-appear opacity-0 [animation-delay:700ms]",
+                "shadow-[0_0_50px_-12px_rgba(0,0,0,0.3)]",
+                "border-navy/10"
+              )}
+            >
+              <img
+                src="/front-pages/landing-page/Admin Dashboard.png"
+                alt="DentalHub Dashboard"
+                width={1200}
+                height={720}
+                className="w-full h-auto"
+                loading="lazy"
+                decoding="async"
+              />
+            </Mockup>
+          </div>
+
+          {/* Subheading under mockup */}
+          <p
+            className={cn(
+              "max-w-[800px] mt-8 animate-appear opacity-0 [animation-delay:900ms]",
+              "text-base sm:text-lg",
+              "text-gray-darker",
+              "font-medium italic text-center"
+            )}
+          >
+            Experience the revolutionary nGenius Pros Dental Hub—an all-in-one
+            platform powered by advanced AI that optimizes operations, boosts
+            treatment acceptance, and keeps patients coming back effortlessly.
+          </p>
+        </div>
+      </div>
+
+      {/* Background Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <Glow
+          variant="center"
+          className="animate-appear-zoom opacity-0 [animation-delay:1000ms]"
+        />
+      </div>
+    </section>
   );
 };
 
@@ -209,7 +276,6 @@ const TestimonialCard = ({ quote, author, role, image }: { quote: string; author
       </div>
       <p className="text-gray-darker mb-6 italic">{quote}</p>
       <div className="flex items-center">
-        {/* Ensure image paths are correct relative to the public folder */}
         <img src={image} alt={author} className="w-12 h-12 rounded-full mr-4 object-cover" />
         <div>
           <h4 className="font-bold text-navy">{author}</h4>
@@ -270,102 +336,9 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gray-smoke">
       <Header />
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gray-smoke py-16 md:py-24 lg:py-32">
-        <div className="relative mx-auto max-w-[1280px] px-4">
-          <div className="relative z-10 flex flex-col items-center text-center">
-            {/* Heading */}
-            <h1
-              className={cn(
-                "inline-block animate-appear", // Assuming 'animate-appear' is defined in CSS
-                "text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl",
-                "leading-[1.1] text-navy",
-                "mb-6"
-              )}
-            >
-              The Future of Dental Practice
-              <br />
-              Management is Here!
-            </h1>
-
-            {/* Description */}
-            <p
-              className={cn(
-                "max-w-[650px] animate-appear opacity-0 [animation-delay:150ms]", // Assuming 'animate-appear' is defined
-                "text-base sm:text-lg md:text-xl",
-                "text-gray-darker",
-                "font-medium mb-8"
-              )}
-            >
-              Transform your dental practice with our AI-powered platform:
-              designed to enhance patient care, optimize operations, and
-              maximize profitability.
-            </p>
-
-            {/* CTAs */}
-            <div
-              className="relative z-10 flex flex-wrap justify-center gap-4 mb-16
-                animate-appear opacity-0 [animation-delay:300ms]" // Assuming 'animate-appear' is defined
-            >
-              <Button
-                size="lg"
-                className={cn(
-                  "bg-gradient-to-r from-turquoise to-navy hover:from-navy hover:to-turquoise",
-                  "text-white font-medium shadow-lg",
-                  "transition-all duration-300"
-                )}
-                asChild
-              >
-                <Link to="/signup">Join our exclusive waitlist today!</Link>
-              </Button>
-            </div>
-
-            {/* Mockup */}
-            <div className="relative w-full max-w-5xl mx-auto">
-              <Mockup
-                className={cn(
-                  "animate-appear opacity-0 [animation-delay:700ms]", // Assuming 'animate-appear' is defined
-                  "shadow-[0_0_50px_-12px_rgba(0,0,0,0.3)]",
-                  "border-navy/10"
-                )}
-              >
-                {/* Ensure image path is correct relative to the public folder */}
-                <img
-                  src="/front-pages/landing-page/Admin Dashboard.png" 
-                  alt="DentalHub Dashboard"
-                  width={1200}
-                  height={720}
-                  className="w-full h-auto"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </Mockup>
-            </div>
-
-            {/* Subheading under mockup */}
-            <p
-              className={cn(
-                "max-w-[800px] mt-8 animate-appear opacity-0 [animation-delay:900ms]", // Assuming 'animate-appear' is defined
-                "text-base sm:text-lg",
-                "text-gray-darker",
-                "font-medium italic text-center"
-              )}
-            >
-              Experience the revolutionary nGenius Pros Dental Hub—an all-in-one
-              platform powered by advanced AI that optimizes operations, boosts
-              treatment acceptance, and keeps patients coming back effortlessly.
-            </p>
-          </div>
-        </div>
-
-        {/* Background Glow */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <Glow
-            variant="center"
-            className="animate-appear-zoom opacity-0 [animation-delay:1000ms]" // Assuming 'animate-appear-zoom' is defined
-          />
-        </div>
-      </section>
+      
+      {/* Hero Section - Using Custom Hero that matches your original design */}
+      <CustomHero />
 
       {/* AI Features Section */}
       <section id="features" className="py-24 px-4 bg-white">
@@ -501,8 +474,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-{/* Waitlist Sign-up Section */}
-<section className="py-20 px-4 bg-gray-smoke">
+      {/* Waitlist Sign-up Section */}
+      <section className="py-20 px-4 bg-gray-smoke">
         <div className="max-w-5xl mx-auto">
           <div className="bg-white rounded-xl shadow-sm p-8 md:p-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -529,7 +502,6 @@ export default function LandingPage() {
               </div>
               
               <div className="bg-gray-smoke p-6 rounded-xl">
-                {/* Consider making this a real form connected to a backend or service */}
                 <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-navy mb-1">
@@ -538,10 +510,10 @@ export default function LandingPage() {
                     <input
                       type="text"
                       id="name"
-                      name="name" // Added name attribute
+                      name="name"
                       className="w-full px-4 py-2 border border-gray-light rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise"
                       placeholder="Dr. Jane Smith"
-                      required // Added basic validation
+                      required
                     />
                   </div>
                   <div>
@@ -551,10 +523,10 @@ export default function LandingPage() {
                     <input
                       type="email"
                       id="email"
-                      name="email" // Added name attribute
+                      name="email"
                       className="w-full px-4 py-2 border border-gray-light rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise"
                       placeholder="jane@example.com"
-                      required // Added basic validation
+                      required
                     />
                   </div>
                   <div>
@@ -564,13 +536,13 @@ export default function LandingPage() {
                     <input
                       type="text"
                       id="practice"
-                      name="practice" // Added name attribute
+                      name="practice"
                       className="w-full px-4 py-2 border border-gray-light rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise"
                       placeholder="Smith Family Dental"
                     />
                   </div>
                   <Button
-                    type="submit" // Added type submit
+                    type="submit"
                     className="w-full bg-gradient-to-r from-turquoise to-navy text-white font-medium"
                   >
                     Join Waitlist
@@ -595,37 +567,36 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Replace with actual StatsCard component */}
             <StatsCard 
               title="Increased Revenue"
               value="32%"
-              change="+15" // Assuming this is percentage points
+              change="+15"
               icon="trending-up"
-              variant="ocean" // Define this color variant in Tailwind config or CSS
+              variant="ocean"
               isGlowing={true}
             />
             <StatsCard 
               title="Patient Retention"
               value="95%"
-              change="+8" // Assuming this is percentage points
+              change="+8"
               icon="users"
-              variant="gold" // Define this color variant
+              variant="gold"
               isGlowing={true}
             />
             <StatsCard 
               title="Chair Utilization"
               value="87%"
-              change="+23" // Assuming this is percentage points
+              change="+23"
               icon="calendar"
-              variant="tropical" // Define this color variant
+              variant="tropical"
               isGlowing={true}
             />
             <StatsCard 
               title="Avg. Treatment Value"
               value="$2,450"
-              change="+19" // Assuming this is percentage points
+              change="+19"
               icon="dollar-sign"
-              variant="royal" // Define this color variant
+              variant="royal"
               isGlowing={true}
             />
           </div>
@@ -686,19 +657,18 @@ export default function LandingPage() {
               quote="DentalHub's AI has transformed our practice workflow. The Recall Genius alone has increased our chair utilization by 23% and dramatically reduced no-shows."
               author="Dr. Sarah Johnson"
               role="Dentist, Johnson Family Dental"
-              image="/images/testimonials/dentist1.jpg" // Verify path exists in public folder
-            />
+              image="/images/testimonials/dentist1.jpg" />
             <TestimonialCard 
               quote="The financial analytics have given us insights we never had before. We've been able to optimize our procedure mix and increase profitability by over 30%."
               author="Dr. Michael Chen"
               role="Practice Owner, Bright Smile Dentistry"
-              image="/images/testimonials/dentist2.jpg" // Verify path exists in public folder
+              image="/images/testimonials/dentist2.jpg"
             />
             <TestimonialCard 
               quote="Patient communication has never been easier. The automated recall system has brought back dozens of dormant patients, and our reviews have improved significantly."
               author="Melissa Rodriguez"
               role="Office Manager, Coastal Dental"
-              image="/images/testimonials/manager1.jpg" // Verify path exists in public folder
+              image="/images/testimonials/manager1.jpg"
             />
           </div>
         </div>
@@ -814,15 +784,14 @@ export default function LandingPage() {
       </section>
 
 {/* Enhanced CTA Section */}
-<section className="relative py-32 px-4 overflow-hidden">
+      <section className="relative py-32 px-4 overflow-hidden">
         <div className="relative z-10 max-w-5xl mx-auto text-center">
           <div className="mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
               Ready to Transform Your Dental Practice?
             </h2>
             <p className="text-white/80 text-lg max-w-3xl mx-auto mb-8">
-            Join our exclusive waitlist today and be among the first to transform your dental practice with DentalHub's comprehensive AI-powered platform. Our early adopters have increased productivity by up to 32% and reclaimed over $50,000 in annual revenue through optimized scheduling, automated patient engagement, and intelligent practice analytics.
-
+              Join our exclusive waitlist today and be among the first to transform your dental practice with DentalHub's comprehensive AI-powered platform. Our early adopters have increased productivity by up to 32% and reclaimed over $50,000 in annual revenue through optimized scheduling, automated patient engagement, and intelligent practice analytics.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button
@@ -831,10 +800,9 @@ export default function LandingPage() {
                 asChild
               >
                 <Link to="/signup">
-                Join our exclusive waitlist today!
+                  Join our exclusive waitlist today!
                 </Link>
               </Button>
-
             </div>
           </div>
           
@@ -860,9 +828,10 @@ export default function LandingPage() {
         
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-purple to-turquoise z-0"></div>
-      </section>     
-{/* Portal Section */}
-<section className="py-20 px-4 bg-gray-smoke">
+      </section>
+      
+      {/* Portal Section */}
+      <section className="py-20 px-4 bg-gray-smoke">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-navy mb-2">
@@ -944,7 +913,6 @@ export default function LandingPage() {
               comprehensive solution.
             </p>
             <div className="flex space-x-4">
-              {/* Replace # with actual social media links */}
               <a href="#" className="text-white hover:text-turquoise transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
@@ -966,7 +934,7 @@ export default function LandingPage() {
           <div>
             <h3 className="text-xl font-bold mb-4">Contact</h3>
             <ul className="space-y-2 text-white/70">
-            <li>Email: info@ngeniusmarketing.com</li>
+              <li>Email: info@ngeniusmarketing.com</li>
               <li>Phone: 949-203-1936</li>
               <li>Address: 4193 Flat Rocks Dr. SUITE# 200 OFFICE# 412, Riverside, CA 92505</li>
             </ul>
@@ -975,7 +943,6 @@ export default function LandingPage() {
           <div>
             <h3 className="text-xl font-bold mb-4">Legal</h3>
             <ul className="space-y-2">
-              {/* Replace # with actual legal page links */}
               <li><Link to="/privacy-policy" className="text-white/70 hover:text-white transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms-of-service" className="text-white/70 hover:text-white transition-colors">Terms of Service</Link></li>
               <li><Link to="/hipaa-compliance" className="text-white/70 hover:text-white transition-colors">HIPAA Compliance</Link></li>
@@ -991,3 +958,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

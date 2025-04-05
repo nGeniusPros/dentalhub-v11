@@ -1,30 +1,62 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, RealtimePostgresChangesPayload, RealtimeChannel } from '@supabase/supabase-js';
+import { URL } from 'url';
 
 // Supabase configuration - Load from environment variables
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+// Use process.env for Node.js environment compatibility during build
+const supabaseUrl: string | undefined = process.env.VITE_SUPABASE_URL;
+const supabaseServiceKey: string | undefined = process.env.VITE_SUPABASE_SERVICE_KEY;
+const supabaseAnonKey: string | undefined = process.env.VITE_SUPABASE_ANON_KEY;
 
-// Basic validation
-if (!supabaseUrl) {
-  throw new Error('Missing environment variable: SUPABASE_URL');
-}
-if (!supabaseServiceKey) {
-  throw new Error('Missing environment variable: SUPABASE_SERVICE_KEY');
+// Use mock values for development if environment variables are missing
+const finalSupabaseUrl = supabaseUrl || 'https://example.supabase.co';
+const finalSupabaseServiceKey = supabaseServiceKey || 'mock-service-key';
+const finalSupabaseAnonKey = supabaseAnonKey || 'mock-anon-key';
+
+// Log warning if using mock values
+if (!supabaseUrl || !supabaseServiceKey || !supabaseAnonKey) {
+  console.warn('Using mock Supabase credentials. This should only be used for development.');
 }
 
 // Create Supabase client
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+export const supabase: SupabaseClient = createClient(finalSupabaseUrl, finalSupabaseAnonKey, {
   auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-    // detectSessionInUrl: false, // Recommended for server-side
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
   },
   global: {
     headers: {
-      // 'x-supabase-single-tenant': 'true' // May not be needed
+      'x-supabase-single-tenant': 'true'
+    },
+    fetch: async (input: string | URL | Request, init?: RequestInit): Promise<Response> => {
+      try {
+        const response = await fetch(input, init);
+        if (!response.ok) {
+          throw new Error(`Database request error: ${response.status} ${response.statusText}`);
+        }
+        return response;
+      } catch (error) {
+        console.error('Database request error:', error);
+        throw error;
+      }
     }
   }
 });
 
-// Export the configuration
-export default supabase;
+// Export utility functions for real-time updates
+export const subscribeToTable = <T extends Record<string, unknown>>(table: string, callback: (payload: RealtimePostgresChangesPayload<T>) => void): RealtimeChannel => {
+  return supabase
+    .channel(`realtime:${table}`)
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: table
+    }, payload => {
+      callback(payload as RealtimePostgresChangesPayload<T>);
+    })
+    .subscribe();
+};
+
+export const unsubscribeFromTable = (channel: string): void => {
+  supabase.channel(channel).unsubscribe();
+};

@@ -1,31 +1,22 @@
 import { Adapter } from '../types';
-import { MCPRequest } from '../protocol/types';
+import { MCPRequest, MCPResponse } from '../protocol/types'; // Import MCPResponse
 import { SupabaseClient } from '@supabase/supabase-js';
 
-// Import the initialized Supabase client from the central config file
-// IMPORTANT: This relies on the build process compiling src/mcp/config/database.ts 
-// to a location accessible via this relative path (e.g., ../config/database.js or .cjs)
-// Adjust the path and extension based on your build output.
-import supabase from '../config/database'; 
-
 export class PatientAdapter implements Adapter {
+  private supabase: SupabaseClient;
 
-  private getSupabaseClient(): SupabaseClient {
-    // Check if the imported client is valid
+  constructor(supabase: SupabaseClient) {
     if (!supabase) {
-      // This error indicates a problem with the central database configuration/initialization
-      console.error("PatientAdapter: Imported Supabase client is not valid!");
-      throw new Error("Database client is not available due to configuration error.");
+      throw new Error("PatientAdapter: Supabase client is required.");
     }
-    return supabase;
+    this.supabase = supabase;
   }
 
-  async processRequest(request: MCPRequest): Promise<unknown> {
-    const client = this.getSupabaseClient(); // Get the centrally initialized client
+  async processRequest(request: MCPRequest): Promise<unknown> { // Rename to match Adapter interface
+    const client = this.supabase;
     console.log(`PatientAdapter processing request for path: ${request.path} with method: ${request.method}`);
 
     const pathParts = request.path.split('/');
-    // Expecting path like /api/patients or /api/patients/:id
     const resource = pathParts[2]; 
     const resourceId = pathParts[3]; 
 
@@ -37,99 +28,111 @@ export class PatientAdapter implements Adapter {
       switch (request.method.toUpperCase()) {
         case 'GET':
           if (resourceId) {
-            // Fetch single patient by ID
             console.log(`PatientAdapter: Fetching patient by ID: ${resourceId}`);
             const { data, error } = await client
-              .from('profiles') // Use 'profiles' table
+              .from('profiles') 
               .select('*')
               .eq('id', resourceId)
-              .eq('role', 'patient') // Ensure it's a patient profile
-              .single(); // Expecting one or zero results
+              .eq('role', 'patient') 
+              .single(); 
 
             if (error) {
               console.error('Supabase GET single error:', error);
-              if (error.code === 'PGRST116') { // Code for "JSON object requested, multiple (or no) rows returned"
-                 throw new Error(`Patient with ID ${resourceId} not found`);
+              if (error.code === 'PGRST116') { 
+                 console.warn(`Patient profile not found or multiple found for ID: ${resourceId}`);
+                 return null; 
               }
-              throw new Error(`Supabase error: ${error.message}`);
+              throw new Error(`Database error fetching patient: ${error.message}`);
             }
-            if (!data) {
-               throw new Error(`Patient with ID ${resourceId} not found`);
-            }
-            console.log(`PatientAdapter: Found patient:`, data);
-            return data;
+            console.log(`PatientAdapter: Found patient data for ID ${resourceId}:`, data);
+            return {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' },
+              body: data,
+              error: null
+            };
 
           } else {
-            // Fetch all patients
             console.log('PatientAdapter: Fetching all patients');
-            // Add query parameter handling if needed (e.g., for pagination, filtering)
             const { data, error } = await client
-              .from('profiles') // Use 'profiles' table
-              .select('*') // Add ordering, limits etc. as needed
-              .eq('role', 'patient'); // Filter for patients
+              .from('profiles') 
+              .select('*') 
+              .eq('role', 'patient'); 
 
             if (error) {
               console.error('Supabase GET all error:', error);
-              throw new Error(`Supabase error: ${error.message}`);
+              throw new Error(`Database error fetching patients: ${error.message}`);
             }
             console.log(`PatientAdapter: Found ${data?.length || 0} patients`);
-            return data || []; // Return empty array if data is null
+            return {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' },
+              body: data || [],
+              error: null
+            };
           }
 
         case 'POST':
           if (!resourceId) {
-             // Create new patient
              console.log('PatientAdapter: Creating new patient with body:', request.body);
              if (!request.body || typeof request.body !== 'object') {
                 throw new Error('Invalid request body for creating patient.');
              }
-             // Add validation for request.body fields here
-             // Ensure the role is set correctly for a new patient profile
-             const patientData = { ...request.body, role: 'patient' }; 
+             const newPatientData = { ...request.body, role: 'patient' }; 
              const { data, error } = await client
-               .from('profiles') // Use 'profiles' table
-               .insert([patientData]) 
-               .select() // Return the created record
-               .single(); // Expecting one record back
+               .from('profiles') 
+               .insert([newPatientData]) 
+               .select() 
+               .single(); 
 
              if (error) {
                console.error('Supabase POST error:', error);
-               throw new Error(`Supabase error: ${error.message}`);
+               if (error.code === '23505') { 
+                  throw new Error('Patient profile creation failed: Duplicate data (e.g., email).' + error.message);
+               }
+               throw new Error(`Database error creating patient: ${error.message}`);
              }
-             console.log('PatientAdapter: Created patient:', data);
-             return data;
+             console.log('PatientAdapter: Successfully created patient:', data);
+             return {
+               status: 201, // Created
+               headers: { 'Content-Type': 'application/json' },
+               body: data,
+               error: null
+             };
           } else {
              throw new Error('POST requests to specific patient IDs are not supported.');
           }
         
-        // Add PUT (update), DELETE cases here
         case 'PUT':
            if (resourceId) {
               console.log(`PatientAdapter: Updating patient ${resourceId} with body:`, request.body);
               if (!request.body || typeof request.body !== 'object') {
                  throw new Error('Invalid request body for updating patient.');
               }
-              // Add validation
-              // Explicitly ignore the 'role' field from the update payload
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const { role: _role, ...updateData } = request.body as Record<string, unknown>;
               const { data, error } = await client
-                .from('profiles') // Use 'profiles' table
-                .update(updateData) // Use data without role
+                .from('profiles') 
+                .update(updateData) 
                 .eq('id', resourceId)
-                .eq('role', 'patient') // Ensure we only update patients
-                .select()
-                .single();
+                .eq('role', 'patient') 
+                .select() 
+                .single(); 
 
               if (error) {
                 console.error('Supabase PUT error:', error);
-                throw new Error(`Supabase error: ${error.message}`);
+                 if (error.code === 'PGRST116') { 
+                   console.warn(`Patient profile not found for update with ID: ${resourceId}`);
+                   return null; 
+                 }
+                throw new Error(`Database error updating patient: ${error.message}`);
               }
-              if (!data) {
-                 throw new Error(`Patient with ID ${resourceId} not found for update.`);
-              }
-              console.log('PatientAdapter: Updated patient:', data);
-              return data;
+              console.log(`PatientAdapter: Successfully updated patient ${resourceId}:`, data);
+              return {
+                status: 200,
+                headers: { 'Content-Type': 'application/json' },
+                body: data,
+                error: null
+              };
            } else {
               throw new Error('PUT requests require a patient ID.');
            }
@@ -137,32 +140,43 @@ export class PatientAdapter implements Adapter {
         case 'DELETE':
            if (resourceId) {
               console.log(`PatientAdapter: Deleting patient ${resourceId}`);
-              const { error } = await client
-                .from('profiles') // Use 'profiles' table
+              const { data, error } = await client
+                .from('profiles') 
                 .delete()
                 .eq('id', resourceId)
-                .eq('role', 'patient'); // Ensure we only delete patients
+                .eq('role', 'patient'); 
 
               if (error) {
                 console.error('Supabase DELETE error:', error);
-                throw new Error(`Supabase error: ${error.message}`);
+                throw new Error(`Database error deleting patient: ${error.message}`);
               }
-              console.log(`PatientAdapter: Deleted patient ${resourceId}`);
-              // Return success indication, maybe { success: true } or just null/undefined
-              return { success: true, id: resourceId }; 
-           } else {
+              console.log(`PatientAdapter: Delete operation completed for patient ID ${resourceId}. Result:`, data);
+              return {
+                status: 200,
+                headers: { 'Content-Type': 'application/json' },
+                body: { success: true, id: resourceId },
+                error: null
+              };
+            } else {
               throw new Error('DELETE requests require a patient ID.');
-           }
+            }
 
         default:
-          console.warn(`PatientAdapter: Unsupported method ${request.method}`);
-          throw new Error(`Unsupported operation: ${request.method} on ${request.path}`);
+          console.warn(`PatientAdapter: Unsupported HTTP method: ${request.method}`);
+          throw new Error(`Unsupported HTTP method: ${request.method}`);
       }
-    } catch (error) {
-       // Log the error within the adapter before re-throwing
-       console.error(`PatientAdapter Error: Path=${request.path}, Method=${request.method}, Error=${error instanceof Error ? error.message : String(error)}`);
-       // Re-throw the error so the gateway can catch it and format an MCPError response
-       throw error; 
+    } catch (err) {
+        console.error(`PatientAdapter Error: Path=${request.path}, Method=${request.method}, Error:`, err);
+        return {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' },
+          body: null,
+          error: {
+            code: 'ADAPTER_ERROR',
+            message: err instanceof Error ? err.message : String(err),
+            details: err instanceof Error ? err.stack : String(err)
+          }
+        };
     }
   }
 }

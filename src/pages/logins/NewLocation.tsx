@@ -107,7 +107,7 @@ const NewLocation: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.Building size={18} className="text-gray-dark" />
+                  <Icons.Building className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="name"
@@ -130,7 +130,7 @@ const NewLocation: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.MapPin size={18} className="text-gray-dark" />
+                  <Icons.MapPin className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="address"
@@ -154,7 +154,7 @@ const NewLocation: React.FC = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Icons.Home size={18} className="text-gray-dark" />
+                    <Icons.Home className="w-4.5 h-4.5 text-gray-dark" />
                   </div>
                   <input
                     id="city"
@@ -175,7 +175,7 @@ const NewLocation: React.FC = () => {
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Icons.Map size={18} className="text-gray-dark" />
+                    <Icons.Map className="w-4.5 h-4.5 text-gray-dark" />
                   </div>
                   <input
                     id="state"
@@ -199,7 +199,7 @@ const NewLocation: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.MapPin size={18} className="text-gray-dark" />
+                  <Icons.MapPin className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="postalCode"
@@ -222,7 +222,7 @@ const NewLocation: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.Phone size={18} className="text-gray-dark" />
+                  <Icons.Phone className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="contactPhone"
@@ -245,7 +245,7 @@ const NewLocation: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.Mail size={18} className="text-gray-dark" />
+                  <Icons.Mail className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="contact_email"

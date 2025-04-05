@@ -122,7 +122,7 @@ const ResetPassword = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.Lock size={18} className="text-gray-dark" />
+                  <Icons.Lock className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="password"
@@ -142,7 +142,7 @@ const ResetPassword = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.ShieldCheck size={18} className="text-gray-dark" />
+                  <Icons.ShieldCheck className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="confirmPassword"
@@ -172,7 +172,7 @@ const ResetPassword = () => {
 
             <div className="mt-4 text-center">
               <Link to="/login" className="text-green hover:text-green-light flex items-center justify-center gap-1">
-                <Icons.ArrowLeft size={16} />
+                <Icons.ArrowLeft className="w-4 h-4" />
                 <span>Back to Login</span>
               </Link>
             </div>

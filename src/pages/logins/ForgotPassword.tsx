@@ -107,7 +107,7 @@ const ForgotPassword = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Icons.Mail size={18} className="text-gray-dark" />
+                  <Icons.Mail className="w-4.5 h-4.5 text-gray-dark" />
                 </div>
                 <input
                   id="email"

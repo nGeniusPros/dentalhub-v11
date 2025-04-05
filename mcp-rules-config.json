@@ -1,0 +1,214 @@
+{
+  "rules": {
+    "validation": {
+      "enabled": true,
+      "defaultPriority": 0
+    },
+    "authorization": {
+      "enabled": true,
+      "defaultPriority": 1
+    },
+    "rateLimit": {
+      "enabled": true,
+      "defaultPriority": 1,
+      "globalLimits": {
+        "perIp": {
+          "limit": 1000,
+          "windowSeconds": 60
+        },
+        "perUser": {
+          "limit": 500,
+          "windowSeconds": 60
+        }
+      }
+    },
+    "audit": {
+      "enabled": true,
+      "defaultPriority": 4,
+      "logToConsole": true,
+      "logToDatabase": true,
+      "tableName": "audit_logs"
+    }
+  },
+  "endpoints": {
+    "/api/database": {
+      "validation": {
+        "POST": {
+          "bodySchema": "databaseRecordSchema"
+        },
+        "PUT": {
+          "bodySchema": "databaseRecordSchema"
+        }
+      },
+      "authorization": {
+        "GET": {
+          "roles": ["admin", "staff"]
+        },
+        "POST": {
+          "roles": ["admin"]
+        },
+        "PUT": {
+          "roles": ["admin"]
+        },
+        "DELETE": {
+          "roles": ["admin"]
+        }
+      },
+      "rateLimit": {
+        "POST": {
+          "limit": 20,
+          "windowSeconds": 60
+        }
+      },
+      "audit": {
+        "POST": {
+          "logBody": true
+        },
+        "PUT": {
+          "logBody": true
+        },
+        "DELETE": {
+          "logBody": false
+        }
+      }
+    },
+    "/api/database/*": {
+      "authorization": {
+        "GET": {
+          "roles": ["admin", "staff"]
+        },
+        "PUT": {
+          "roles": ["admin"]
+        },
+        "DELETE": {
+          "roles": ["admin"]
+        }
+      }
+    },
+    "/api/patients": {
+      "validation": {
+        "POST": {
+          "bodySchema": "patientCreateSchema"
+        },
+        "PUT": {
+          "bodySchema": "patientUpdateSchema"
+        }
+      },
+      "authorization": {
+        "GET": {
+          "roles": ["admin", "staff"]
+        },
+        "POST": {
+          "roles": ["admin", "staff"]
+        },
+        "PUT": {
+          "roles": ["admin", "staff"]
+        },
+        "DELETE": {
+          "roles": ["admin"]
+        }
+      },
+      "rateLimit": {
+        "POST": {
+          "limit": 10,
+          "windowSeconds": 60
+        }
+      },
+      "audit": {
+        "POST": {
+          "logBody": true
+        },
+        "PUT": {
+          "logBody": true
+        },
+        "DELETE": {
+          "logBody": false
+        }
+      }
+    },
+    "/api/patients/*": {
+      "authorization": {
+        "GET": {
+          "roles": ["admin", "staff", "patient"],
+          "customRule": "patientSelfAccessOnly"
+        }
+      }
+    },
+    "/auth/login": {
+      "rateLimit": {
+        "POST": {
+          "limit": 5,
+          "windowSeconds": 60
+        }
+      },
+      "audit": {
+        "POST": {
+          "logBody": false,
+          "logHeaders": true
+        }
+      }
+    }
+  },
+  "schemas": {
+    "patientCreateSchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2
+        },
+        "phone": {
+          "type": "string",
+          "optional": true
+        },
+        "address": {
+          "type": "string",
+          "optional": true
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "optional": true
+        }
+      },
+      "required": ["email", "name"]
+    },
+    "patientUpdateSchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "optional": true
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "optional": true
+        },
+        "phone": {
+          "type": "string",
+          "optional": true
+        },
+        "address": {
+          "type": "string",
+          "optional": true
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "optional": true
+        }
+      }
+    }
+  },
+  "customRules": {
+    "patientSelfAccessOnly": {
+      "type": "authorization",
+      "description": "Patients can only access their own data",
+      "logic": "async (context, user) => { const pathParts = context.request.path.split('/'); const patientId = pathParts[pathParts.length - 1]; return user.role === 'patient' && user.id !== patientId ? { passed: false, message: 'You can only access your own data' } : { passed: true }; }"
+    }
+  }
+}
